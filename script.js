@@ -1,6 +1,27 @@
 document.documentElement.classList.add('js');
 
 document.addEventListener('DOMContentLoaded', function(){
+  // Turvaverkko: tästä lähtien CSS saa piilottaa .reveal-elementit animaatiota varten.
+  // Tämä lisätään ehdottomasti ensimmäisenä, ennen mitään muuta koodia, jotta yksikään
+  // myöhempi virhe tässä tiedostossa ei voi jättää sivun sisältöä pysyvästi piiloon.
+  document.documentElement.classList.add('reveal-ready');
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveals = document.querySelectorAll('.reveal');
+  if(reduce){
+    reveals.forEach(function(el){ el.classList.add('in'); });
+  } else if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    // Ei IntersectionObserver-tukea: näytä sisältö suoraan sen sijaan, että se jäisi piiloon.
+    reveals.forEach(function(el){ el.classList.add('in'); });
+  }
+
   // Pehmeä sivunvaihto: häivytä ulos ennen navigointia
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduceMotion){
@@ -151,20 +172,6 @@ document.addEventListener('DOMContentLoaded', function(){
     window.addEventListener('scroll', function(){ if(!ticking){ ticking = true; requestAnimationFrame(applyHero); } }, {passive:true});
     window.addEventListener('resize', applyHero);
     applyHero();
-  }
-
-  // Reveal on scroll
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var reveals = document.querySelectorAll('.reveal');
-  if(reduce){
-    reveals.forEach(function(el){ el.classList.add('in'); });
-  } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
-    reveals.forEach(function(el){ io.observe(el); });
   }
 
   // Count-up
