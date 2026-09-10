@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // (Reverse scrubbing stutters — the browser has to hunt keyframes backwards.)
   var heroVids = document.querySelectorAll('.hero-video video');
   if(heroVids.length === 2){
-    var RATE = 0.55, FADE = 1.6, cur = 0, arming = false;
+    var RATE = 1, FADE = 1.6, cur = 0, arming = false;
     var prime = function(v){ v.removeAttribute('loop'); try{ v.playbackRate = RATE; }catch(e){} };
     prime(heroVids[0]); prime(heroVids[1]);
     heroVids[0].addEventListener('loadedmetadata', function(){ prime(heroVids[0]); });
@@ -263,6 +263,50 @@ document.addEventListener('DOMContentLoaded', function(){
     overlay.addEventListener('click', function(e){ if(e.target === overlay || e.target === overlayImg) closeLightbox(); });
     closeBtn.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay.classList.contains('open')) closeLightbox(); });
+  }
+
+  // Yhteydenottolomake: lähetys AJAXilla Formspreehen, ei uudelleenohjausta —
+  // onnistumisnäkymä näytetään VASTA kun Formspree vahvistaa onnistuneen HTTP-vastauksen.
+  var contactForm = document.getElementById('yhteydenotto');
+  var successView = document.getElementById('yhteydenotto-success');
+  if(contactForm && successView){
+    var formSubmitting = false;
+    contactForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(formSubmitting) return; // estä päällekkäiset lähetykset
+      formSubmitting = true;
+
+      var submitBtn = contactForm.querySelector('.submit');
+      var originalLabel = submitBtn ? submitBtn.textContent : '';
+      if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Lähetetään…'; }
+      var existingError = contactForm.querySelector('.form-error');
+      if(existingError) existingError.remove();
+
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      }).then(function(res){
+          // Formspreen oma sopimus: onnistunut lähetys = HTTP 2xx (res.ok).
+          // Virhetilanteessa (esim. 422) Formspree palauttaa JSON-rungon, jossa on "errors".
+          if(res.ok){
+            contactForm.style.display = 'none';
+            successView.hidden = false;
+            successView.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center'});
+          } else {
+            throw new Error('Formspree responded with status ' + res.status);
+          }
+        })
+        .catch(function(){
+          formSubmitting = false;
+          if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
+          var err = document.createElement('p');
+          err.className = 'form-error';
+          err.textContent = 'Viestin lähettäminen ei onnistunut. Yritä uudelleen tai ota yhteyttä sähköpostitse.';
+          contactForm.appendChild(err);
+          // Käyttäjän kirjoittamat tiedot jäävät tarkoituksella lomakkeeseen — ei form.reset()-kutsua.
+        });
+    });
   }
 
 });
