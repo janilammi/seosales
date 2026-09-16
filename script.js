@@ -309,4 +309,130 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
+  // Case Vietnam -kuvakaruselli: nuolet, näppäimistö ja oma edellinen/seuraava-lightbox
+  var vnTrack = document.querySelector('.vn-carousel-track');
+  if(vnTrack){
+    var vnSlides = Array.prototype.slice.call(vnTrack.querySelectorAll('.vn-slide'));
+    var vnPrevBtn = document.querySelector('.vn-prev');
+    var vnNextBtn = document.querySelector('.vn-next');
+
+    var vnScrollBy = function(dir){
+      var slide = vnSlides[0];
+      var amount = (slide.getBoundingClientRect().width + 10) * dir;
+      vnTrack.scrollBy({left: amount, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    };
+    if(vnPrevBtn) vnPrevBtn.addEventListener('click', function(){ vnScrollBy(-1); });
+    if(vnNextBtn) vnNextBtn.addEventListener('click', function(){ vnScrollBy(1); });
+    vnTrack.addEventListener('keydown', function(e){
+      if(e.key === 'ArrowRight'){ e.preventDefault(); vnScrollBy(1); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); vnScrollBy(-1); }
+    });
+
+    // Oma lightbox, jossa edellinen/seuraava — sama visuaalinen tyyli kuin sivuston muu lightbox
+    var vnOverlay = document.createElement('div');
+    vnOverlay.className = 'lightbox-overlay';
+    vnOverlay.setAttribute('role', 'dialog');
+    vnOverlay.setAttribute('aria-modal', 'true');
+    vnOverlay.setAttribute('aria-label', 'Case Vietnam — suurennettu kuva');
+    var vnImg = document.createElement('img');
+    var vnCloseBtn = document.createElement('button');
+    vnCloseBtn.className = 'lightbox-close';
+    vnCloseBtn.type = 'button';
+    vnCloseBtn.setAttribute('aria-label', 'Sulje suurennettu kuva');
+    vnCloseBtn.innerHTML = '&times;';
+    var vnPrevLB = document.createElement('button');
+    vnPrevLB.className = 'vn-lb-arrow vn-lb-prev';
+    vnPrevLB.type = 'button';
+    vnPrevLB.setAttribute('aria-label', 'Edellinen kuva');
+    vnPrevLB.innerHTML = '&lsaquo;';
+    var vnNextLB = document.createElement('button');
+    vnNextLB.className = 'vn-lb-arrow vn-lb-next';
+    vnNextLB.type = 'button';
+    vnNextLB.setAttribute('aria-label', 'Seuraava kuva');
+    vnNextLB.innerHTML = '&rsaquo;';
+    vnOverlay.appendChild(vnCloseBtn);
+    vnOverlay.appendChild(vnPrevLB);
+    vnOverlay.appendChild(vnImg);
+    vnOverlay.appendChild(vnNextLB);
+    document.body.appendChild(vnOverlay);
+
+    var vnIndex = 0;
+    var vnLastFocused = null;
+    var vnShow = function(i){
+      vnIndex = (i + vnSlides.length) % vnSlides.length;
+      var img = vnSlides[vnIndex].querySelector('img');
+      vnImg.src = img.currentSrc || img.src;
+      vnImg.alt = img.alt || '';
+    };
+    var vnOpen = function(i){
+      vnLastFocused = document.activeElement;
+      vnShow(i);
+      vnOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      vnCloseBtn.focus();
+    };
+    var vnClose = function(){
+      vnOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+      if(vnLastFocused) vnLastFocused.focus();
+    };
+    vnSlides.forEach(function(slide, i){
+      slide.addEventListener('click', function(){ vnOpen(i); });
+    });
+    vnPrevLB.addEventListener('click', function(e){ e.stopPropagation(); vnShow(vnIndex - 1); });
+    vnNextLB.addEventListener('click', function(e){ e.stopPropagation(); vnShow(vnIndex + 1); });
+    vnCloseBtn.addEventListener('click', vnClose);
+    vnOverlay.addEventListener('click', function(e){ if(e.target === vnOverlay || e.target === vnImg) vnClose(); });
+    document.addEventListener('keydown', function(e){
+      if(!vnOverlay.classList.contains('open')) return;
+      if(e.key === 'Escape') vnClose();
+      if(e.key === 'ArrowRight') vnShow(vnIndex + 1);
+      if(e.key === 'ArrowLeft') vnShow(vnIndex - 1);
+    });
+  }
+
+  // Master-videoiden play/pause-nappi — hillitty, lisätään automaattisesti jokaiselle sivulle
+  var makePlayPauseBtn = function(){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'video-toggle';
+    btn.setAttribute('aria-label', 'Keskeytä video');
+    btn.innerHTML =
+      '<svg class="vt-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg>' +
+      '<svg class="vt-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M7 4.5v15l13-7.5z"/></svg>';
+    return btn;
+  };
+
+  // Etusivun hero-video (kaksi ristikkäisvaihtuvaa video-elementtiä hallitaan yhdessä)
+  var heroVideoWrap = document.querySelector('.hero-video');
+  if(heroVideoWrap){
+    var heroVideos = heroVideoWrap.querySelectorAll('video');
+    if(heroVideos.length){
+      var heroBtn = makePlayPauseBtn();
+      heroVideoWrap.appendChild(heroBtn);
+      var heroPaused = false;
+      heroBtn.addEventListener('click', function(){
+        heroPaused = !heroPaused;
+        heroVideos.forEach(function(v){ heroPaused ? v.pause() : v.play(); });
+        heroBtn.classList.toggle('is-paused', heroPaused);
+        heroBtn.setAttribute('aria-label', heroPaused ? 'Toista video' : 'Keskeytä video');
+      });
+    }
+  }
+
+  // Muiden sivujen master-videot (hero-band-photo)
+  document.querySelectorAll('.hero-band-photo').forEach(function(figure){
+    var v = figure.querySelector('video');
+    if(!v) return;
+    var btn = makePlayPauseBtn();
+    figure.appendChild(btn);
+    var paused = false;
+    btn.addEventListener('click', function(){
+      paused = !paused;
+      paused ? v.pause() : v.play();
+      btn.classList.toggle('is-paused', paused);
+      btn.setAttribute('aria-label', paused ? 'Toista video' : 'Keskeytä video');
+    });
+  });
+
 });
