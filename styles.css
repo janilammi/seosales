@@ -56,7 +56,7 @@ a{color:var(--navy);text-decoration:none}
 ::selection{background:rgba(108,77,246,.18)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 48px}
 
-.ulink{display:inline-flex;align-items:center;white-space:nowrap;color:var(--navy);font-weight:500;font-size:15.5px;border-bottom:1.5px solid var(--violet);padding-bottom:3px;transition:color .2s,border-color .2s}
+.ulink{display:inline-flex;align-items:center;white-space:nowrap;width:fit-content;color:var(--navy);font-weight:500;font-size:15.5px;border-bottom:1.5px solid var(--violet);padding-bottom:3px;transition:color .2s,border-color .2s}
 .ulink:hover{color:var(--violet-dark)}
 .ulink .arr{display:inline-block;color:var(--violet);margin-left:9px;transition:transform .25s ease}
 .ulink:hover .arr{transform:translateX(5px)}
@@ -67,8 +67,6 @@ a{color:var(--navy);text-decoration:none}
 /* Sivunvaihdon pehmeä siirtymä */
 .js body{animation:pageIn .5s cubic-bezier(.2,.7,.2,1)}
 @keyframes pageIn{from{opacity:0}to{opacity:1}}
-.js body.leaving{opacity:0;transition:opacity .26s ease;animation:none}
-@media(prefers-reduced-motion:reduce){.js body,.js body.leaving{animation:none;opacity:1;transition:none}}
 
 /* Header + nav */
 header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,0);backdrop-filter:blur(0px);transition:background .38s ease,backdrop-filter .38s ease,box-shadow .38s ease,border-color .38s ease;border-bottom:1px solid transparent}
@@ -97,9 +95,9 @@ footer .logo img{height:30px}
 .dropdown>button{display:inline-flex;align-items:center;gap:6px}
 .dropdown>button .caret{width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .2s}
 .dropdown.open>button .caret{transform:rotate(-135deg);margin-top:2px}
-.dropmenu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(8px) scale(.985);min-width:280px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);padding:8px;box-shadow:0 24px 60px -24px rgba(23,22,28,.28),0 2px 8px rgba(23,22,28,.04);opacity:0;visibility:hidden;transition:opacity .26s cubic-bezier(.2,.7,.2,1),transform .26s cubic-bezier(.2,.7,.2,1),visibility .26s}
+.dropmenu{position:absolute;top:calc(100% + 8px);left:0;transform:translateY(8px) scale(.985);min-width:280px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);padding:8px;box-shadow:0 24px 60px -24px rgba(23,22,28,.28),0 2px 8px rgba(23,22,28,.04);opacity:0;visibility:hidden;transition:opacity .26s cubic-bezier(.2,.7,.2,1),transform .26s cubic-bezier(.2,.7,.2,1),visibility .26s}
 .dropmenu::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
-.dropdown:hover .dropmenu,.dropdown.open .dropmenu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0) scale(1)}
+.dropdown:hover .dropmenu,.dropdown.open .dropmenu{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
 .dropmenu a{display:block;padding:11px 14px;border-radius:10px;color:var(--navy);font-size:15px;transition:background .18s,padding-left .18s}
 .dropmenu a:hover{padding-left:18px}
 .dropmenu a small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px}
@@ -115,7 +113,7 @@ section{padding:68px 0}
 .rule{height:1px;background:var(--line);border:0;max-width:1200px;margin:0 auto}
 
 /* Scroll progress bar (left) */
-.scrollprogress{position:fixed;top:0;left:0;bottom:0;width:2px;background:transparent;z-index:80}
+.scrollprogress{position:fixed;top:0;left:0;bottom:0;width:2px;background:transparent;z-index:40}
 .scrollprogress span{display:block;width:100%;height:0;background:linear-gradient(180deg,var(--violet),var(--turq))}
 
 /* Reveal */
@@ -131,6 +129,11 @@ section{padding:68px 0}
 .hero .wrap{position:relative;z-index:1}
 .hero h1{font-size:clamp(42px,5.6vw,66px);max-width:24ch;letter-spacing:-.03em;margin-bottom:34px;line-height:1.06}
 .hero p:not(.eyebrow){font-size:clamp(17px,1.7vw,20px);max-width:680px;margin-bottom:22px;line-height:1.65}
+.hero p.hero-q:not(.eyebrow){font-size:21px;line-height:1.7;font-weight:500;color:#F0EEF5}
+.hero-q--light{color:var(--navy)!important;font-family:var(--display);font-weight:600;font-size:19px!important;line-height:1.4!important;margin-bottom:18px}
+.miksi-q-block .hero-q--light{margin-bottom:12px}
+.miksi-q-block .hero-q--light:last-child{margin-bottom:0}
+.hero-q--prominent{font-family:var(--display);font-size:28px!important;font-weight:600!important;line-height:1.4!important;color:#F5F3EE!important;max-width:20ch}
 .hero p.sub2{font-size:var(--fs-body-md);color:var(--ink-2);max-width:660px;margin-bottom:44px}
 .hero .actions{display:flex;gap:34px;align-items:center;flex-wrap:wrap}
 .hero .secondary{color:var(--muted);font-size:15px;transition:color .2s}
@@ -152,8 +155,9 @@ section{padding:68px 0}
 .js .hero-title .w:nth-child(9){animation-delay:.66s}
 /* Body copy spreads to the full width below the heading (the "horizontal stroke") */
 .hero-body-full{margin-top:26px;max-width:800px}
-.hero-q{position:relative;padding-left:20px}
-.hero-q::before{content:"";position:absolute;left:0;top:0.55em;width:7px;height:7px;border-radius:50%}
+.hero-q{position:relative;padding-left:20px;font-weight:500}
+.hero-q strong{font-weight:500}
+.hero-q::before{content:"";position:absolute;left:0;top:0.6em;width:6px;height:6px;border-radius:50%}
 .hero-q--turq::before{background:var(--turq-bright)}
 .hero-q--violet::before{background:var(--violet-bright)}
 .hero-body-full p:not(.eyebrow){max-width:800px}
@@ -219,6 +223,8 @@ section{padding:68px 0}
 .hero--dark .ulink{color:#F5F3EE;border-color:var(--violet-bright)}
 .hero--dark .ulink:hover{color:var(--violet-bright)}
 .hero--dark .ulink .arr{color:var(--violet-bright)}
+.hero-body-full .ulink{color:#C6C2D1;border-color:rgba(198,194,209,.5)}
+.hero-body-full .ulink:hover{color:#F5F3EE}
 .hero--dark .secondary{color:#8F8A9E}
 .hero--dark .secondary:hover{color:#F5F3EE}
 .hero--dark ::selection{background:rgba(160,140,255,.3)}
@@ -374,7 +380,7 @@ section{padding:68px 0}
 .s-idx{font-family:var(--mono);font-size:13px;color:var(--turq-dark);flex:none;width:30px}
 .s-head{flex:1;display:flex;flex-direction:column;gap:6px}
 .s-feat{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.s-title{font-family:var(--display);font-weight:600;font-size:clamp(21px,2.5vw,28px);color:var(--navy);line-height:1.1;letter-spacing:-.02em}
+.s-title{font-family:var(--display);font-weight:600;font-size:clamp(21px,2.5vw,28px);color:var(--navy);line-height:1.1;letter-spacing:-.02em;min-width:0;flex:1}
 .svc-item .s-idx,.svc-item .s-feat{color:var(--violet-dark)}
 .svc-item.blue .s-feat{color:var(--turq-dark)}
 .svc-item.blue .s-idx{color:var(--turq-dark)}
@@ -394,6 +400,8 @@ section{padding:68px 0}
 /* Service page body */
 .svc-body{padding:68px 0}
 .svc-body h2{font-size:clamp(27px,3.6vw,38px);margin-bottom:24px;max-width:21ch;line-height:1.12}
+#b2b-miten-voimme-h2{max-width:none;white-space:nowrap}
+@media(max-width:640px){#b2b-miten-voimme-h2{white-space:normal}}
 #miksi-tietoylivoima-h2{max-width:34ch}
 #miksi-koneisto-h2{max-width:34ch}
 .svc-body p:not(.eyebrow){font-size:var(--fs-body-lg);max-width:760px;margin-bottom:20px}
@@ -410,17 +418,23 @@ section{padding:68px 0}
 .ticklist li::before{content:"\2713";position:absolute;left:0;top:0;color:var(--turq-dark);font-weight:600}
 .ticklist.blue li::before{color:var(--turq-dark)}
 .disclist{list-style:none;margin-top:22px;max-width:700px}
+.disclist--grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px 44px;max-width:900px}
+@media(max-width:640px){.disclist--grid{grid-template-columns:1fr}}
 .disclist li{position:relative;padding-left:24px;font-size:var(--fs-body);color:var(--text);line-height:1.55;margin-bottom:11px}
 .disclist li::before{content:"";position:absolute;left:2px;top:.66em;width:6px;height:6px;border-radius:50%;background:var(--turq)}
 .disclist.blue li::before{background:var(--turq)}
+.disclist li.violet::before{background:var(--violet)}
+section.tint .disclist li.violet::before{background:var(--violet-bright)}
 .svc-quote{border-left:2px solid var(--violet);padding:6px 0 6px 30px;margin:36px 0 12px;max-width:760px}
 .svc-quote p{font-family:var(--display);font-size:clamp(19px,2.2vw,23px);font-weight:500;color:var(--navy);line-height:1.5;margin-bottom:16px;max-width:none}
 .svc-quote .cite{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.svc-quote--turq p{font-family:var(--sans);font-size:var(--fs-body-lg);font-weight:400;font-style:italic;color:var(--navy);line-height:1.6}
+.svc-quote--turq .cite{font-family:var(--sans);font-size:var(--fs-body-sm);font-style:normal;letter-spacing:normal;text-transform:none;color:var(--muted)}
 
 /* FAQ */
 .faq-item{border-top:1px solid var(--line);padding:32px 0}
 .faq-item:first-of-type{border-top:0}
-.faq-q{font-family:var(--display);font-weight:600;font-size:22px;color:var(--navy);margin-bottom:14px;max-width:32ch;line-height:1.2;letter-spacing:-.015em}
+.faq-q{font-family:var(--display);font-weight:700;font-size:22px;color:var(--navy);margin-bottom:14px;max-width:32ch;line-height:1.2;letter-spacing:-.015em}
 .faq-a{font-size:var(--fs-body-sm);max-width:800px;line-height:1.65}
 
 /* Steps */
@@ -454,18 +468,20 @@ section{padding:68px 0}
 .hero-band-copy a,.hero-band-copy button{pointer-events:auto}
 .hero-band-copy .eyebrow{color:var(--turq-bright);margin-bottom:24px}
 .hero-band-copy .eyebrow::before{background:var(--turq-bright)}
+.hero-band-copy .hero-q{color:#F0EEF5;font-size:21px;line-height:1.7;margin-top:24px;font-weight:500}
+.hero-band-copy .hero-q:first-of-type{margin-top:40px}
 .hero-band h1{color:#F5F3EE;font-size:clamp(32px,4.1vw,46px);letter-spacing:-.026em;line-height:1.07;max-width:none;margin:0;text-shadow:0 2px 24px rgba(16,15,20,.55)}
 .hero-tagline{
-  margin-top:16px;font-family:var(--mono);font-size:20px;font-weight:500;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--turq-bright);
-  text-shadow:0 2px 18px rgba(16,15,20,.6);
+  margin-top:16px;font-family:var(--sans);font-size:15px;font-weight:500;
+  letter-spacing:.02em;text-transform:none;color:var(--turq-bright);
+  text-shadow:0 1px 12px rgba(16,15,20,.4);
 }
 .hero-band h1 em{color:var(--violet-bright)}
 .hero-band h1 em.t{color:var(--turq-bright)}
 .hero-band-photo{margin:40px 0;align-self:stretch;position:relative;overflow:hidden;line-height:0;background:var(--navy);z-index:1;min-height:clamp(320px,32vw,440px)}
 /* Koko leveyden variantti: kuva täyttää palkin, otsikko sen päällä */
 .hero-band--full .band-inner{min-height:0}
-.hero-band--full .hero-band-photo{grid-area:1 / 1 / 2 / 3;margin:0;height:clamp(460px,52vw,620px)}
+.hero-band--full .hero-band-photo{grid-area:1 / 1 / 2 / 3;margin:0;height:clamp(460px,52vw,620px);width:100%;max-width:100%}
 #ajankohtaista-hero .hero-band-photo{height:clamp(500px,46vw,640px)}
 .hero-band--full .hero-band-photo img,.hero-band--full .hero-band-photo video{height:100%}
 .hero-band--full .hero-band-photo::before{
@@ -480,7 +496,7 @@ section{padding:68px 0}
   .hero-band .band-inner{grid-template-columns:1fr;min-height:0}
   .hero-band-copy{padding:56px 32px 34px;margin-right:0;grid-area:auto}
   .hero-band-photo{grid-area:auto}
-  .hero-band-photo{margin:0 0 0 32px;align-self:auto;aspect-ratio:16/10}
+  .hero-band-photo{margin:0 0 0 32px;align-self:auto;aspect-ratio:16/10;width:calc(100% - 32px);max-width:calc(100% - 32px)}
   .hero-band-photo::before{display:none}
 }
 
@@ -490,10 +506,14 @@ section{padding:68px 0}
 .photo-wide::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(0deg,rgba(16,15,20,.85) 0%,rgba(16,15,20,.2) 48%,transparent 72%)}
 .photo-wide .cap{position:absolute;left:0;right:0;bottom:0;z-index:1;padding-bottom:52px;line-height:normal}
+.photo-wide .cap .cap-question{color:#C6C2D1;font-size:clamp(15px,1.6vw,18px);margin-bottom:10px;max-width:36ch;line-height:1.4}
 .photo-wide .cap h2{color:#F5F3EE;font-size:clamp(26px,3.6vw,44px);max-width:20ch;line-height:1.1;letter-spacing:-.02em}
+.cap-style-h2{font-size:clamp(26px,3.6vw,44px)!important;line-height:1.1!important;letter-spacing:-.02em;max-width:20ch}
 #miksi-rakenne-photo .cap h2{max-width:34ch}
 .photo-wide .cap h2 em{color:var(--violet-bright)}
 .photo-wide .cap h2 em.t{color:var(--turq-bright)}
+.photo-wide .cap .cap-link{display:block;color:#F5F3EE;border-bottom-color:var(--turq-bright)}
+.photo-wide .cap .cap-link:hover{color:var(--turq-bright)}
 
 /* Full-bleed overlay hero — image fills the section, heading sits on top with
    a light scrim (for bright/high-key photos). Signature editorial moment. */
@@ -554,10 +574,20 @@ section.cta-band{padding:0}
 .more-list a .l{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--turq-bright);font-weight:500}
 .more-list a .t{font-family:var(--display);font-weight:500;font-size:18px;color:#F5F3EE;margin-top:8px;letter-spacing:-.01em;transition:color .2s}
 .more-list a:hover .t{color:#fff}
+.more-svc--light{background:#fff}
+.more-svc--light::before{display:none}
+.more-svc--light .eyebrow{color:var(--turq-dark)}
+.more-svc--light .eyebrow::before{background:var(--turq-dark)}
+.more-svc--light .more-list a{border-color:var(--line);background:#fff;box-shadow:0 2px 10px rgba(23,22,28,.04)}
+.more-svc--light .more-list a:hover{border-color:var(--turq-dark);background:#fff;box-shadow:0 12px 28px -12px rgba(23,22,28,.18)}
+.more-svc--light .more-list a .l{color:var(--turq-dark)}
+.more-svc--light .more-list a .t{color:var(--navy)}
+.more-svc--light .more-list a:hover .t{color:var(--navy)}
 
 /* Contact */
 .contact{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .contact .info h2{font-size:clamp(29px,3.6vw,42px);margin-bottom:24px;max-width:15ch;line-height:1.1}
+.contact .info h2.info-question{font-size:clamp(22px,2.7vw,26px);font-weight:600;max-width:none;line-height:1.3;margin-bottom:20px}
 .contact .info p{margin-bottom:20px;max-width:560px}
 .contact .info .name{color:var(--navy);font-weight:500;font-size:17px;margin:34px 0 12px;font-family:var(--sans)}
 .contact .info .row{font-size:15px;margin-bottom:8px}
@@ -593,7 +623,7 @@ footer{padding:72px 0 34px;background:var(--charcoal-3);border-top:1px solid rgb
 footer .logo{color:#F5F3EE}
 footer .logo img{height:30px;filter:invert(1) hue-rotate(180deg)}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;align-items:start;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
-.foot-col{display:flex;flex-direction:column;gap:10px}
+.foot-col{display:flex;flex-direction:column;gap:10px;min-width:0}
 .foot-h{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--turq-bright);margin-bottom:8px}
 .foot-col a{color:#C6C2D1;font-size:14.5px;transition:color .2s}
 .foot-col a:hover{color:var(--turq-bright)}
@@ -602,11 +632,18 @@ footer .logo img{height:30px;filter:invert(1) hue-rotate(180deg)}
 .foot-linkedin:hover{color:var(--turq)}
 .biz+.foot-linkedin{color:var(--ink-2)}
 .biz+.foot-linkedin:hover{color:var(--violet)}
-.foot-bottom{display:flex;align-items:center;gap:14px;padding-top:26px;font-size:13px;color:#8F8A9E}
+.foot-bottom{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;padding-top:26px;font-size:13px;color:#8F8A9E}
+.foot-bottom span{white-space:nowrap}
 .foot-privacy{color:#8F8A9E;text-decoration:underline;text-underline-offset:2px;transition:color .2s}
 .foot-privacy:hover{color:var(--ink-2)}
 .foot-tick{width:22px;height:1.5px;background:var(--turq);flex:none}
-@media(max-width:860px){.foot-grid{grid-template-columns:1fr 1fr;gap:34px}}
+@media(max-width:860px){
+  .foot-grid{grid-template-columns:1fr 1fr;gap:34px}
+  .foot-brand{order:1;grid-column:1 / -1}
+  .foot-col--contact{order:2}
+  .foot-col--brand{order:3}
+  .foot-col--palvelut{order:4}
+}
 
 /* Section tints — now a deliberate DARK charcoal beat in the page rhythm
    (recurring section type across every page: alternates white/dark while scrolling) */
@@ -615,12 +652,13 @@ section.tint{
   border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);
 }
 #mmk-milloin{position:relative}
-#mmk-milloin::before{
-  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.05)),url('digimarkkinointi.jpg');
-  background-size:cover;background-position:center;
-  filter:grayscale(1);
+.img-bg-section{overflow:hidden}
+.img-bg-section__img{
+  position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  object-fit:cover;object-position:center;filter:grayscale(1);
 }
+.img-bg-section::after{content:"";position:absolute;inset:0;z-index:0;background:rgba(0,0,0,.05);pointer-events:none}
+.img-bg-section .wrap{position:relative;z-index:1}
 #seo-cta-img{
   background-image:linear-gradient(90deg,rgba(23,23,29,.72) 0%,rgba(23,23,29,.40) 55%,rgba(23,23,29,.20) 100%),url('hakukoneoptimointi-seo-geo-hakutulokset.jpg');
   background-size:cover;background-position:center;
@@ -760,7 +798,10 @@ section.tint .palvelut-lede{font-size:var(--fs-body-lg);max-width:30ch;color:#F5
 .contact .info .contact-linkedin{font-weight:700;color:#0A66C2}
 .contact .info .contact-linkedin:hover{color:#0A66C2;opacity:.8}
 .contact .info .contact-linkedin svg{flex:none}
-.ig-link{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-body-sm);font-weight:700;color:var(--text);transition:color .2s}
+.ig-link{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-body-sm);font-weight:700;color:var(--text);border-bottom:1.5px solid var(--turq);padding-bottom:3px;transition:color .2s,border-color .2s}
+.ig-link:hover{color:var(--turq-dark)}
+.ig-link .arr{transition:transform .2s}
+.ig-link:hover .arr{transform:translateX(5px)}
 .ig-link:hover{color:var(--navy)}
 .ig-link svg{flex:none;border-radius:5px}
 .row-l{display:inline-block;width:96px;flex:none;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -770,7 +811,7 @@ details.faq-item{padding:0}
 details.faq-item summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:22px;padding:26px 0}
 details.faq-item summary::-webkit-details-marker{display:none}
 details.faq-item .s-idx{width:34px;flex:none}
-details.faq-item .faq-q{margin-bottom:0;flex:1;max-width:none;transition:color .2s}
+details.faq-item .faq-q{margin-bottom:0;flex:1;min-width:0;max-width:none;transition:color .2s}
 details.faq-item .s-toggle{align-self:center}
 details.faq-item[open] summary .s-toggle{transform:rotate(90deg)}
 details.faq-item[open] summary .s-toggle::after{opacity:0}
@@ -801,7 +842,6 @@ details.faq-item[open] .faq-panel{animation:panelIn .42s ease}
 }
 /* Yhteistyöt / referenssit — logostripe, laajennettavissa */
 #lahtokohta p:not(.eyebrow),#loydettavyys p:not(.eyebrow){max-width:760px;font-size:var(--fs-body-lg)}
-#yhteistyo-helppoa{padding-bottom:32px}
 #ukk-intro{padding-bottom:16px}
 #ukk-faq-1{padding-top:8px}
 #lahtokohta{padding:48px 0 56px}
@@ -843,7 +883,7 @@ section.tint .partners a{background:var(--bg)}
   .dropdown>button{font-family:var(--display);font-size:26px;font-weight:500;color:#F5F3EE;padding:12px 0;letter-spacing:-.01em}
   .dropdown>button:hover{color:var(--turq-bright)}
   .dropmenu{position:static;transform:none;box-shadow:none;border:0;background:transparent;min-width:0;padding:2px 0 10px 20px;display:none;opacity:1;visibility:visible}
-  .dropdown.open .dropmenu,.dropdown.active .dropmenu{display:block}
+  .dropdown.open .dropmenu,.dropdown.active .dropmenu{display:block;transform:none}
   .dropmenu a{color:#C6C2D1;font-size:17px;padding:9px 0;border-radius:0}
   .dropmenu a:hover,.dropmenu a.active{background:transparent;color:var(--turq-bright)}
   .nav-links.open>a,.nav-links.open .dropdown{animation:navIn .5s cubic-bezier(.2,.7,.2,1) both}
@@ -947,9 +987,13 @@ section.tint .partners a{background:var(--bg)}
 }
 
 /* CASE VIETNAM — pieni, huomaamaton kuvakaruselli oikean reunan tyhjässä tilassa */
-.vn-case-layout{display:flex;align-items:flex-start;gap:56px}
+.vn-case-layout{display:flex;align-items:flex-start;gap:94px}
 .vn-case-text{flex:1;min-width:0;max-width:640px}
-.vn-carousel{flex:none;width:400px;position:sticky;top:96px;padding-top:4px}
+.vn-carousel-group{flex:none;width:400px}
+.vn-carousel-group .vn-carousel{width:100%;margin-top:20px;margin-bottom:36px}
+.vn-carousel-group .vn-carousel:first-of-type{margin-top:250px}
+.vn-case-tag{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--turq-dark);margin-bottom:14px}
+.vn-carousel-group h3{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.4;color:var(--navy);letter-spacing:normal;max-width:none;margin-top:0;margin-bottom:16px}
 .vn-carousel-track{
   display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px;
@@ -976,7 +1020,8 @@ section.tint .partners a{background:var(--bg)}
 @media(max-width:1100px){
   .vn-case-layout{flex-direction:column;gap:32px}
   .vn-case-text{max-width:none}
-  .vn-carousel{width:100%;position:static}
+  .vn-carousel-group{width:100%}
+  .vn-carousel-group .vn-carousel:first-of-type{margin-top:0}
   .vn-slide{width:44vw;max-width:220px}
   .vn-slide:first-child,.vn-slide:nth-child(4){width:22vw;max-width:100px}
 }
@@ -1016,3 +1061,61 @@ section.tint .partners a{background:var(--bg)}
 .video-toggle.is-paused .vt-pause{display:none}
 .video-toggle.is-paused .vt-play{display:block}
 @media(max-width:640px){.video-toggle{width:30px;height:30px;bottom:12px;right:12px}}
+@media(max-width:480px){.ulink{white-space:normal}}
+
+/* JANI LAMMI -esittely: teksti + kuva rinnakkain, kuva hillitty ja tekstin korkuinen */
+.jani-row{display:flex;align-items:center;gap:56px}
+.jani-text{flex:1;min-width:0;max-width:620px}
+.jani-photo{flex:none;max-height:320px;width:auto;max-width:280px;object-fit:contain;border-radius:var(--r-md)}
+.jani-linkedin{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:#0A66C2;transition:opacity .2s}
+.jani-linkedin:hover{opacity:.8}
+.jani-linkedin svg{flex:none}
+@media(max-width:860px){
+  .jani-row{flex-direction:column;gap:28px}
+  .jani-text{max-width:none}
+  .jani-photo{max-height:260px;max-width:220px;align-self:center}
+}
+
+/* KIDEVE-OSION TYÖPAJAKUVA: teksti vasemmalla, kuva oikealla, yläreuna tasattu otsikkoalueen kanssa */
+.kideve-intro-row{display:flex;align-items:flex-start;gap:48px;margin-top:0}
+.kideve-intro-text{flex:1;min-width:0}
+.kideve-shot{flex:none;width:260px;margin:0;max-width:260px;border-radius:6px;overflow:hidden;background:#fff;box-shadow:0 24px 60px -28px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.1);cursor:zoom-in}
+.kideve-shot img{display:block;width:100%;height:auto}
+@media(max-width:900px){
+  .kideve-intro-row{flex-direction:column;gap:28px}
+  .kideve-shot{width:100%;max-width:320px;align-self:center}
+}
+
+/* KIDEVE-TYÖPAJAN OTSIKKO + ILMOITTAUTUMISLINKKI SAMALLA RIVILLÄ DESKTOPISSA */
+.kideve-wp-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.kideve-wp-head h3{margin:0}
+.kideve-wp-head .kideve-cta{flex:none;white-space:nowrap}
+@media(max-width:640px){.kideve-wp-head{flex-direction:column;align-items:flex-start;gap:8px}}
+
+/* HERO-ALUEEN INGRESSI H1:N ALLA (esim. B2B-sivu: lyhyt H1 + vahva alalause) */
+.hero-ingress{margin-top:18px;font-family:var(--display);font-weight:500;font-size:clamp(20px,2.4vw,28px);color:#F5F3EE;line-height:1.35;max-width:26ch}
+
+/* B2B: "Miten voimme auttaa myynnissä?" -osion 6 kohtaa, kevyt rakenne olemassa olevalla typografialla */
+.svc-list{display:flex;flex-direction:column;gap:28px;margin-top:8px}
+.svc-list-item p{margin:0}
+.svc-list-item p:not(.svc-list-title){color:var(--text);margin-top:4px}
+.svc-list-title{font-family:var(--display);font-weight:600;color:var(--navy);font-size:18px}
+section.tint .svc-list-title{color:#F5F3EE}
+section.tint .svc-list-item p:not(.svc-list-title){color:#C6C2D1}
+
+/* B2B "Miten voimme auttaa myynnissä?" -osion pienet favicon-bulletit */
+.svc-list-item--dot{position:relative;padding-left:24px}
+.svc-list-item--dot::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%}
+.svc-list-item--violet::before{background:var(--violet)}
+.svc-list-item--turq::before{background:var(--turq)}
+section.tint .svc-list-item--violet::before{background:var(--violet-bright)}
+section.tint .svc-list-item--turq::before{background:var(--turq-bright)}
+
+/* Poistaa kahden peräkkäisen svc-body-osion tupla-paddingin Jani Lammi -osion yläpuolelta */
+#miksi-jani-section{padding-top:20px}
+
+/* B2B-sivun ensimmäinen sisältölause mahtuu yhdelle riville */
+#b2b-intro-line{max-width:820px;margin-top:28px}
+
+/* B2B-sivun Tavoitteena-rivi: poistaa ylimääräisen tuplapaddingin page-heron ja rivin oman marginaalin välillä */
+#b2b-goals-row{margin-top:0}

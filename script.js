@@ -22,23 +22,6 @@ document.addEventListener('DOMContentLoaded', function(){
     reveals.forEach(function(el){ el.classList.add('in'); });
   }
 
-  // Pehmeä sivunvaihto: häivytä ulos ennen navigointia
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduceMotion){
-    document.addEventListener('click', function(e){
-      var a = e.target.closest && e.target.closest('a');
-      if(!a) return;
-      if(a.target || a.hasAttribute('download') || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-      var href = a.getAttribute('href') || '';
-      if(!href || href.charAt(0) === '#' || /^(mailto:|tel:|https?:)/i.test(href)) return;
-      if(a.href.split('#')[0] === location.href.split('#')[0]) return;
-      e.preventDefault();
-      document.body.classList.add('leaving');
-      setTimeout(function(){ location.href = a.href; }, 250);
-    });
-    window.addEventListener('pageshow', function(){ document.body.classList.remove('leaving'); });
-  }
-
   // Hero video: two stacked copies, always forward, crossfaded at the seam.
   // (Reverse scrubbing stutters — the browser has to hunt keyframes backwards.)
   var heroVids = document.querySelectorAll('.hero-video video');
@@ -309,12 +292,16 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-  // Case Vietnam -kuvakaruselli: nuolet, näppäimistö ja oma edellinen/seuraava-lightbox
-  var vnTrack = document.querySelector('.vn-carousel-track');
-  if(vnTrack){
+  // Case-kuvakarusellit: nuolet, näppäimistö ja oma edellinen/seuraava-lightbox.
+  // Tukee useampaa riippumatonta karusellia samalla sivulla (esim. useita case-kuvastoja).
+  var vnCarousels = Array.prototype.slice.call(document.querySelectorAll('.vn-carousel'));
+  vnCarousels.forEach(function(vnRoot){
+    var vnTrack = vnRoot.querySelector('.vn-carousel-track');
+    if(!vnTrack) return;
     var vnSlides = Array.prototype.slice.call(vnTrack.querySelectorAll('.vn-slide'));
-    var vnPrevBtn = document.querySelector('.vn-prev');
-    var vnNextBtn = document.querySelector('.vn-next');
+    var vnPrevBtn = vnRoot.querySelector('.vn-prev');
+    var vnNextBtn = vnRoot.querySelector('.vn-next');
+    var vnLabel = vnRoot.getAttribute('aria-label') || 'Case-kuvat';
 
     var vnScrollBy = function(dir){
       var slide = vnSlides[0];
@@ -333,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function(){
     vnOverlay.className = 'lightbox-overlay';
     vnOverlay.setAttribute('role', 'dialog');
     vnOverlay.setAttribute('aria-modal', 'true');
-    vnOverlay.setAttribute('aria-label', 'Case Vietnam — suurennettu kuva');
+    vnOverlay.setAttribute('aria-label', vnLabel + ' — suurennettu kuva');
     var vnImg = document.createElement('img');
     var vnCloseBtn = document.createElement('button');
     vnCloseBtn.className = 'lightbox-close';
@@ -389,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if(e.key === 'ArrowRight') vnShow(vnIndex + 1);
       if(e.key === 'ArrowLeft') vnShow(vnIndex - 1);
     });
-  }
+  });
 
   // Master-videoiden play/pause-nappi — hillitty, lisätään automaattisesti jokaiselle sivulle
   var makePlayPauseBtn = function(){
