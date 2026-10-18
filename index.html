@@ -37,7 +37,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="styles.css?v=20260922b">
+<link rel="stylesheet" href="styles.css?v=20261018">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="dark-hero">
@@ -61,6 +61,7 @@
       <a href="ajankohtaista.html">Ajankohtaista</a>
       <a href="ukk.html">UKK</a>
       <a href="yhteys.html">Ota yhteyttä</a>
+      <a href="nakyvyysanalyysi.html" class="nav-cta nav-cta--analyysi">Näkyvyysanalyysi</a>
     </nav>
     <button class="menu-btn" aria-label="Valikko" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
@@ -324,6 +325,34 @@
   </div>
 </section>
 
+<!-- NÄKYVYYSANALYYSI TEASER -->
+<section id="analyysi-teaser" class="tint">
+  <div class="wrap">
+    <div class="at-grid">
+      <div class="at-text">
+        <p class="eyebrow reveal">Maksuton näkyvyysanalyysi</p>
+        <h2 class="reveal d1">Miten yrityksen verkkosivut näkyvät hauissa?</h2>
+        <p class="reveal d2">Analyysi käy sivuston läpi hakukoneiden, tekoälyhakujen ja kävijän silmin. Saatte muutamassa sekunnissa pisteet kuudelta osa-alueelta ja näette, <em class="hl">mitkä korjaukset kannattaa tehdä ensin</em>.</p>
+        <a href="#at-url" class="glow-btn at-jump reveal d2">Analysoi verkkosivut maksutta</a>
+      </div>
+      <div class="at-side">
+        <div class="at-visual reveal d1">
+          <canvas id="teaserMotion" aria-hidden="true"></canvas>
+          <button type="button" class="video-toggle" aria-label="Pysäytä animaatio"><svg class="vt-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg><svg class="vt-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+        </div>
+      <form class="at-form reveal d2" action="nakyvyysanalyysi.html" method="get">
+        <label for="at-url">Kirjoita verkkosivun osoite tähän</label>
+        <div class="at-row">
+          <input id="at-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="esim. yritys.fi" required>
+          <button type="submit" class="glow-btn at-submit">Analysoi</button>
+        </div>
+        <p class="at-meta">Maksuton · Tulokset heti · Ei kirjautumista</p>
+      </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WHY -->
 <section id="miksi" class="why">
   <div class="wrap">
@@ -472,6 +501,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260922b"></script>
+<script src="script.js?v=20261015"></script>
+<script src="teaser-motion.js?v=20261018" defer></script>
 </body>
 </html>

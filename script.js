@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function(){
     btn.setAttribute('aria-label', 'Keskeytä video');
     btn.innerHTML =
       '<svg class="vt-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg>' +
-      '<svg class="vt-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M7 4.5v15l13-7.5z"/></svg>';
+      '<svg class="vt-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
     return btn;
   };
 
