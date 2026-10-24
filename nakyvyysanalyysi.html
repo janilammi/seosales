@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Näkyvyysanalyysi — SEO Sales</title>
-<link rel="canonical" href="https://seosales.fi/nakyvyysanalyysi.html">
+<title>Maksuton näkyvyysanalyysi verkkosivuille | SEO Sales</title>
+<link rel="canonical" href="nakyvyysanalyysi.html">
 <meta name="description" content="Miten yrityksen verkkosivut näkyvät hakukoneissa ja tekoälyhauissa? Maksuton analyysi kertoo, mikä tuo jo asiakkaita ja mikä kannattaa korjata ensin.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
   --line:#E8E8EC;--line-2:#D8D8DE;
   --violet:#6D4AFF;--violet-dark:#5232E0;--violet-bright:#A08CFF;
   --turq:#12B5AA;--turq-dark:#0C847C;--turq-bright:#25D9C6;
-  --charcoal:#17171D;--charcoal-2:#1B1C23;
+  --charcoal:#17171D;--charcoal-2:#1B1C23;--charcoal-3:#100F14;
   --pass:#27AE60;--warn:#E67E22;--fail:#C0392B;
   /* Tekstinä ja pienissä merkeissä käytettävät tummemmat sävyt (kontrasti vähintään 4.5:1) */
   --pass-text:#1B7A43;--warn-text:#A35200;
@@ -37,19 +37,119 @@ a{color:var(--navy);text-decoration:none}
 ::selection{background:rgba(108,77,246,.18)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 48px}
 
-/* Header */
-header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{display:inline-flex;align-items:center}
-.logo img{height:22px;width:auto}
-.nav-right{display:flex;align-items:center;gap:16px}
-.nav-link{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--text);transition:color .2s}
-.nav-link:hover{color:var(--navy)}
-.nav-cta{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:999px;padding:9px 18px;color:var(--navy);transition:border-color .25s,background .25s,color .25s}
-.nav-cta:hover{border-color:var(--navy);background:var(--navy);color:#fff}
+/* Yläpalkki: kopio seosales.fi:n styles.css:stä (tumman heron versio). Kun sivuston yläpalkki muuttuu, päivitä myös tämä. */
+header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,0);backdrop-filter:blur(0px);transition:background .38s ease,backdrop-filter .38s ease,box-shadow .38s ease,border-color .38s ease;border-bottom:1px solid transparent}
+header.stuck{background:rgba(255,255,255,.74);backdrop-filter:blur(22px) saturate(1.7);border-bottom-color:transparent;box-shadow:0 1px 0 rgba(23,22,28,.05),0 10px 34px -26px rgba(23,22,28,.5)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px;transition:height .38s cubic-bezier(.2,.7,.2,1)}
+header.stuck .nav{height:56px}
+.logo{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--display);font-weight:600;color:var(--navy);font-size:20px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;line-height:1}
+.logo img{height:30px;width:auto;display:block;transition:height .38s cubic-bezier(.2,.7,.2,1),filter .3s,opacity .2s}
+header.stuck .logo img{height:25px}
+.logo:hover img{opacity:.85}
+/* Logon merkissä on violetti #7C6DC4: pelkkä invert kääntäisi sen oliivinvihreäksi.
+   hue-rotate palauttaa sen vaaleaksi violetiksi (#8E7FD6), teksti muuttuu valkoiseksi. */
+.dark-hero header .logo img{filter:invert(1) hue-rotate(180deg)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links>a,.dropdown>button{color:var(--text);font-size:14.5px;font-family:var(--sans);font-weight:700;background:none;border:0;cursor:pointer;transition:color .2s,background .25s ease;padding:9px 15px;border-radius:999px;white-space:nowrap}
+.nav-links>a:not(.nav-cta):hover,.dropdown>button:hover{background:rgba(23,22,28,.055)}
+.nav-links>a:hover,.dropdown>button:hover,.nav-links>a.active,.dropdown.active>button{color:var(--navy)}
+.nav-cta{font-family:var(--mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line-2)!important;border-radius:999px;padding:11px 20px!important;margin-left:10px;color:var(--navy)!important;transition:border-color .25s,background .25s,color .25s,transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s!important}
+.nav-cta:hover{border-color:var(--navy)!important;background:var(--navy)!important;color:#fff!important;transform:translateY(-1px);box-shadow:0 10px 22px -14px rgba(23,22,28,.7)}
 
-/* Hero */
-.hero{background:var(--charcoal);padding:72px 0 56px;text-align:center}
+/* Dropdown */
+.dropdown{position:relative}
+.dropdown>button{display:inline-flex;align-items:center;gap:6px}
+.dropdown>button .caret{width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px;transition:transform .2s}
+.dropdown.open>button .caret{transform:rotate(-135deg);margin-top:2px}
+.dropmenu{position:absolute;top:calc(100% + 8px);left:0;transform:translateY(8px) scale(.985);min-width:280px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);padding:8px;box-shadow:0 24px 60px -24px rgba(23,22,28,.28),0 2px 8px rgba(23,22,28,.04);opacity:0;visibility:hidden;transition:opacity .26s cubic-bezier(.2,.7,.2,1),transform .26s cubic-bezier(.2,.7,.2,1),visibility .26s}
+.dropmenu::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
+.dropdown:hover .dropmenu,.dropdown.open .dropmenu{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.dropmenu a{display:block;padding:11px 14px;border-radius:10px;color:var(--navy);font-size:15px;transition:background .18s,padding-left .18s}
+.dropmenu a:hover{padding-left:18px}
+.dropmenu a small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px}
+.dropmenu a:hover,.dropmenu a.active{background:var(--paper)}
+.menu-btn{display:none;background:none;border:none;font-size:24px;color:var(--navy);cursor:pointer;line-height:1}
+/* Light header text while it floats over the dark hero — sama lasityyli myös vieritettynä,
+   vain matalampana. Vieritettynä alpha on korkeampi, koska takana on vaalea sisältö. */
+.dark-hero header{background:rgba(23,23,29,.38);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-bottom-color:rgba(255,255,255,.09)}
+.dark-hero header.stuck{background:rgba(23,23,29,.84);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);border-bottom-color:rgba(255,255,255,.08);box-shadow:0 14px 40px -30px rgba(0,0,0,.8)}
+@supports not (backdrop-filter: blur(2px)){
+  .dark-hero header{background:rgba(23,23,29,.72)}
+  .dark-hero header.stuck{background:rgba(23,23,29,.95)}
+}
+.dark-hero header .logo{color:#F5F3EE}
+.dark-hero header .nav-links>a:hover,.dark-hero header .dropdown>button:hover{background:rgba(255,255,255,.09)}
+.dark-hero header .nav-links>a,.dark-hero header .dropdown>button{color:#C6C2D1}
+.dark-hero header .nav-links>a:hover,.dark-hero header .dropdown>button:hover,.dark-hero header .nav-links>a.active{color:#fff}
+.dark-hero header .menu-btn{color:#F5F3EE}
+.dark-hero header:not(.stuck) .nav-cta:hover{background:#F5F3EE!important;color:#17161C!important;border-color:#F5F3EE!important}
+.nav-links>a:not(.nav-cta){position:relative}
+.nav-links>a:not(.nav-cta)::after{content:"";position:absolute;left:15px;right:15px;bottom:4px;height:1.5px;background:var(--turq);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.nav-links>a.active::after{transform:scaleX(1)}
+@media(max-width:1200px){
+  .menu-btn{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:42px;height:42px}
+  .menu-btn span{display:block;width:22px;height:2px;background:currentColor;border-radius:2px;transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .2s}
+  body.menu-open .menu-btn span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  body.menu-open .menu-btn span:nth-child(2){opacity:0}
+  body.menu-open .menu-btn span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .nav-links{display:flex;position:fixed;top:78px;left:0;right:0;bottom:0;background:var(--charcoal-3);flex-direction:column;align-items:flex-start;gap:0;padding:36px 48px;z-index:55;overflow-y:auto;visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .3s,transform .3s,visibility .3s}
+  .nav-links.open{visibility:visible;opacity:1;transform:none}
+  .nav-links>a{padding:12px 0;width:100%;text-align:left;font-family:var(--display);font-size:26px;font-weight:500;color:#F5F3EE;letter-spacing:-.01em}
+  .nav-links>a:hover{color:var(--turq-bright)}
+  .nav-links>a:not(.nav-cta)::after{display:none}
+  .nav-cta{margin:26px 0 0;text-align:center;width:auto;font-size:12px!important;font-family:var(--mono);border-color:rgba(255,255,255,.3)!important;color:#F5F3EE!important;padding:14px 28px!important}
+  .nav-links>a.nav-cta{text-align:center;border-radius:var(--r-sm);margin-left:0}
+  .nav-cta:hover{background:#F5F3EE!important;color:var(--charcoal-3)!important;border-color:#F5F3EE!important}
+  .dropdown{width:100%}
+  .dropdown>button{font-family:var(--display);font-size:26px;font-weight:500;color:#F5F3EE;padding:12px 0;letter-spacing:-.01em}
+  .dropdown>button:hover{color:var(--turq-bright)}
+  .dropmenu{position:static;transform:none;box-shadow:none;border:0;background:transparent;min-width:0;padding:2px 0 10px 20px;display:none;opacity:1;visibility:visible}
+  .dropdown.open .dropmenu,.dropdown.active .dropmenu{display:block;transform:none}
+  .dropmenu a{color:#C6C2D1;font-size:17px;padding:9px 0;border-radius:0}
+  .dropmenu a:hover,.dropmenu a.active{background:transparent;color:var(--turq-bright)}
+  .nav-links.open>a,.nav-links.open .dropdown{animation:navIn .5s cubic-bezier(.2,.7,.2,1) both}
+  .nav-links.open>*:nth-child(1){animation-delay:.05s}
+  .nav-links.open>*:nth-child(2){animation-delay:.11s}
+  .nav-links.open>*:nth-child(3){animation-delay:.17s}
+  .nav-links.open>*:nth-child(4){animation-delay:.23s}
+  .nav-links.open>*:nth-child(5){animation-delay:.29s}
+  body.menu-open{overflow:hidden}
+  body.menu-open header,body.menu-open.dark-hero header:not(.stuck){background:var(--charcoal-3);border-bottom-color:rgba(255,255,255,.08);backdrop-filter:none}
+  body.menu-open header .logo img{filter:invert(1) hue-rotate(180deg)}
+  body.menu-open .menu-btn{color:#F5F3EE}
+}
+@keyframes navIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.nav-links.open>a,.nav-links.open .dropdown{animation:none}}
+@media(min-width:1201px){
+  header .wrap.nav{max-width:none;padding-left:36px;padding-right:36px}
+  .nav{justify-content:flex-start}
+  header{--logo-w:158px}
+  header.stuck{--logo-w:132px}
+  .nav-links{flex:1;margin-left:max(28px,calc((100% - 1128px) / 2 - 27px - var(--logo-w)))}
+  .nav-links>a[href$="yhteys.html"]{margin-left:auto}
+}
+/* Näkyvyysanalyysi-painike: kompakti, kehys liukuu violetista turkoosiin */
+.nav-links>a.nav-cta--analyysi{position:relative;font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:0;text-transform:none;padding:8px 18px!important;margin-left:6px;border-color:transparent!important;color:var(--navy)!important}
+.nav-links>a.nav-cta--analyysi::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:linear-gradient(90deg,var(--violet),var(--turq),var(--violet));background-size:200% 100%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:navCtaGlow 6s linear infinite;pointer-events:none}
+.nav-links>a.nav-cta--analyysi:hover{background:rgba(109,74,255,.07)!important;color:var(--navy)!important;border-color:transparent!important;transform:none;box-shadow:none}
+.dark-hero header .nav-links>a.nav-cta--analyysi{color:#F5F3EE!important}
+.dark-hero header .nav-links>a.nav-cta--analyysi::before{background-image:linear-gradient(90deg,var(--violet-bright),var(--turq-bright),var(--violet-bright))}
+.dark-hero header .nav-links>a.nav-cta--analyysi:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}
+@keyframes navCtaGlow{to{background-position:200% 0}}
+@media(prefers-reduced-motion:reduce){.nav-links>a.nav-cta--analyysi::before{animation:none}}
+@media(max-width:1200px){.nav-links>a.nav-cta--analyysi{color:#F5F3EE!important;font-size:16px;padding:12px 24px!important;margin:20px 0 0}.nav-links>a.nav-cta--analyysi::before{background-image:linear-gradient(90deg,var(--violet-bright),var(--turq-bright),var(--violet-bright))}.nav-links>a.nav-cta--analyysi:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}}
+/* Ota yhteyttä täytettynä painikkeena, jotta se erottuu muista linkeistä (leveä näkymä) */
+@media(min-width:1201px){
+  .nav-links>a[href$="yhteys.html"]{background:var(--navy);color:#fff;padding:9px 18px}
+  .nav-links>a[href$="yhteys.html"]::after{display:none}
+  .nav-links>a[href$="yhteys.html"]:hover{background:var(--ink-2);color:#fff}
+  .dark-hero header .nav-links>a[href$="yhteys.html"]{background:#F5F3EE;color:#17161C}
+  .dark-hero header .nav-links>a[href$="yhteys.html"]:hover{background:#fff;color:#17161C}
+}
+@media(max-width:860px){header .wrap.nav{padding:0 28px}}
+
+/* Hero: liukuu läpikuultavan yläpalkin alle kuten sivuston muillakin sivuilla */
+.hero{background:var(--charcoal);margin-top:-72px;padding:144px 0 56px;text-align:center}
 .hero h1{color:#fff;font-size:clamp(28px,5vw,46px);margin-bottom:14px;line-height:1.08}
 .hero h1 em{color:var(--violet-bright)}
 .hero p{color:var(--text-on-dark);font-size:17px;max-width:580px;margin:0 auto;line-height:1.65}
@@ -168,15 +268,20 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .chip.pass{background:#E8F9F0;color:var(--pass-text)}
 
 /* Blurred preview + email gate */
-.gate-wrapper{position:relative;overflow:hidden}
-.blurred-preview{filter:blur(6px);opacity:.55;pointer-events:none;padding:0 0 32px;user-select:none;max-height:480px;overflow:hidden}
+/* Esikatselu ja kortti samassa ruudukon solussa: alue kasvaa kortin mittaiseksi, jos kortti on korkeampi. */
+.gate-wrapper{position:relative;overflow:hidden;display:grid}
+.blurred-preview,.gate-overlay{grid-area:1/1}
+/* Raportin alku terävänä (noin 260 px), sitten sumeaksi; kortti alkaa siitä, mihin terävä osa loppuu */
+.blurred-preview{position:relative;align-self:start;display:grid;pointer-events:none;user-select:none;max-height:980px;overflow:hidden;padding-top:12px}
+.preview-sharp,.preview-blur{grid-area:1/1}
+.preview-sharp{-webkit-mask-image:linear-gradient(#000 0,#000 230px,transparent 330px);mask-image:linear-gradient(#000 0,#000 230px,transparent 330px)}
+.preview-blur{filter:blur(5px);opacity:.6;-webkit-mask-image:linear-gradient(transparent 0,transparent 210px,#000 340px);mask-image:linear-gradient(transparent 0,transparent 210px,#000 340px)}
 .blurred-preview::after{content:"";position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,var(--bg))}
-.gate-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:5}
+.gate-overlay{display:flex;align-items:flex-start;justify-content:center;padding:300px 0 24px;z-index:5}
 .gate-card{background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:40px 36px;max-width:460px;width:90%;text-align:center;box-shadow:0 24px 60px -20px rgba(23,22,28,.12)}
 .gate-card h2{font-size:22px;margin-bottom:6px}
 .gate-card h2 em{color:var(--turq-dark);font-style:normal}
 .gate-card .gate-sub{font-size:15px;color:var(--muted);margin-bottom:20px;line-height:1.55}
-.gate-free{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--turq-dark);margin:2px 0 0}
 .sent-note{max-width:960px;margin:8px auto 28px;padding:16px 20px;background:var(--paper);border-left:3px solid var(--turq);border-radius:var(--r-sm);font-size:15px;color:var(--text);line-height:1.6}
 .sent-note strong{color:var(--navy)}
 .gate-list{list-style:none;text-align:left;max-width:320px;margin:14px auto 22px;font-size:15px;color:var(--text);line-height:1.5}
@@ -198,6 +303,7 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 }
 .gate-card input[type="tel"]::placeholder{color:var(--muted)}
 .gate-card input[type="tel"]:focus{border-color:var(--violet)}
+.gate-card .checkbox-row[hidden]{display:none}
 .gate-card .checkbox-row{display:flex;align-items:flex-start;gap:8px;text-align:left;margin-bottom:16px;cursor:pointer}
 .gate-card .checkbox-row input{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--turq);cursor:pointer}
 .gate-card .checkbox-row label{font-size:13px;color:var(--muted);line-height:1.5;cursor:pointer}
@@ -211,6 +317,8 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .gate-error{font-size:13px;color:var(--fail);margin:-4px 0 10px;text-align:left}
 .gate-error:empty{display:none}
 .gate-note{font-size:12px;color:var(--muted);margin-top:10px}
+.gate-card .checkbox-row label a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.gate-card .req{color:var(--turq-dark);font-weight:700}
 .gate-note a{color:var(--muted);text-decoration:underline}
 
 /* Full results */
@@ -251,6 +359,13 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
   transition:background .2s,transform .2s,box-shadow .3s;text-decoration:none;
 }
 .btn-cta:hover{transform:translateY(-1px);box-shadow:0 10px 22px -14px rgba(23,22,28,.7)}
+/* Keskustelupainike ensisijaisena, arviolinkit kevyempinä sen vieressä */
+/* Arviolinkit toissijaisina pääpainikkeen alla, ohuen viivan erottamina ja samalla keskilinjalla */
+.cta-reviews{max-width:520px;margin:40px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)}
+.cta-reviews p{font-size:13px;color:var(--text-on-dark);line-height:1.5;margin:0 0 12px}
+.cta-review-links{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.cta-review-links a{font-size:13px;font-weight:600;color:#F5F3EE;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:7px 14px;transition:border-color .2s,background .2s}
+.cta-review-links a:hover{border-color:var(--turq-bright);background:rgba(255,255,255,.06)}
 
 /* Footer */
 footer{padding:28px 0;text-align:center;border-top:1px solid var(--line)}
@@ -272,30 +387,40 @@ footer a{color:var(--turq-dark);text-decoration:underline;text-underline-offset:
   .wrap{padding:0 20px}
   .input-box{flex-direction:column}
   .input-box input[type="text"],.btn-primary{width:100%}
-  .hero{padding:52px 0 44px}
-  header .wrap{height:56px}
-  .logo img{height:18px}
-  .nav-right{gap:10px}
-  .nav-link{display:none}
-  .nav-cta{white-space:nowrap;font-size:10px;letter-spacing:.04em;padding:8px 12px}
+  .hero{padding:124px 0 44px}
   .cat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .intro-grid{grid-template-columns:1fr;gap:10px}
   .gate-card{padding:28px 20px}
   .info-tooltip{font-size:12px;padding:10px 12px}
 }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Löytääkö Google teidät, ja houkutteleeko hakutulos klikkaamaan?","acceptedAnswer":{"@type":"Answer","text":"Hakutulos on usein ensimmäinen kosketus yritykseen. Se ratkaisee, klikkaako hakija juuri teitä. Tarkistamme sivun otsikon, hakutuloksessa näkyvän kuvauksen, pääotsikon, ensisijaisen osoitteen ja sisäiset linkit."}},{"@type":"Question","name":"Toimiiko sivusto nopeasti ja luotettavasti kaikilla laitteilla?","acceptedAnswer":{"@type":"Answer","text":"Tekniset puutteet voivat estää hyvänkin sisällön näkymisen ja karkottaa kävijän ennen kuin sivu latautuu. Tarkistamme suojatun yhteyden ja sen ohjauksen, mobiilinäkymän, kieliasetuksen, indeksointiluvan, palvelimen vasteajan, pakkauksen, sivun koon, latautumista estävät skriptit, kuvien mitat ja keveyden, kuvien ja videoiden koon, robots.txt-tiedoston ja sivukartan."}},{"@type":"Question","name":"Onko sisältöä riittävästi, ja onko se selkeästi jäsennelty?","acceptedAnswer":{"@type":"Answer","text":"Selkeästi jäsennelty sisältö auttaa sekä kävijää että hakukonetta ymmärtämään nopeasti, mitä tarjoatte ja kenelle. Tarkistamme tekstin määrän, otsikkorakenteen ja kuvien vaihtoehtoiset tekstit."}},{"@type":"Question","name":"Miltä linkki näyttää, kun se jaetaan LinkedInissä, Facebookissa tai WhatsAppissa?","acceptedAnswer":{"@type":"Answer","text":"Kun tiedot ovat kunnossa, jaettu linkki näkyy kuvana, otsikkona ja kuvauksena eikä pelkkänä osoitteena. Se herättää luottamusta ja houkuttelee klikkaamaan. Tarkistamme jakotiedot eli niin sanotut Open Graph -tiedot: kuvan, otsikon ja kuvauksen, jotka näkyvät, kun linkki jaetaan. Lisäksi tarkistamme X-jakokortin ja sivuston kuvakkeen. Osa-alue ei mittaa somekanavien seuraajia, julkaisuja tai tavoittavuutta."}},{"@type":"Question","name":"Voivatko tekoälyhaut, kuten ChatGPT, Claude ja Gemini, suositella teitä?","acceptedAnswer":{"@type":"Answer","text":"Yhä useampi hakee tietoa tekoälyhauista, kuten ChatGPT:stä, Claudesta, Geministä, Perplexitystä ja Copilotista. Tekoälyhakuihin optimointia kutsutaan myös nimellä GEO (Generative Engine Optimization). Tarkistamme rakenteellisen datan, kysymysmuotoiset otsikot, UKK-merkinnät, tekoälybottien pääsyn, llms.txt-tiedoston, yritystiedot ja sen, näkyykö sisältö ilman JavaScriptiä."}},{"@type":"Question","name":"Tuoko sivusto ostavia asiakkaita vai satunnaisia kävijöitä?","acceptedAnswer":{"@type":"Answer","text":"Näkyvyys tuottaa arvoa vasta, kun se tuo oikeita asiakkaita. Tarkistamme, vastaavatko otsikko ja kuvaus sivun sisältöä, houkutteleeko teksti vahingossa vääriä kävijöitä, onko viesti selkeä ja ohjaako sivu kävijää yhteydenottoon."}}]}</script>
 </head>
-<body>
+<body class="dark-hero">
 
-<header>
-  <div class="wrap">
-    <a href="index.html" class="logo">
-      <img src="seo-sales-logo.svg" alt="SEO Sales" width="140" height="22">
-    </a>
-    <div class="nav-right">
-      <a href="index.html" class="nav-link">seosales.fi</a>
-      <a href="yhteys.html" class="nav-cta">Varaa maksuton keskustelu</a>
-    </div>
+<!-- Sama yläpalkki kuin seosales.fi:n sivuilla. build-site-page.mjs muuttaa linkit suhteellisiksi. -->
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="/" class="logo"><img src="seo-sales-logo.svg" alt="SEO Sales"></a>
+    <nav class="nav-links">
+      <div class="dropdown">
+        <button type="button" aria-haspopup="true">Palvelut <span class="caret" aria-hidden="true"></span></button>
+        <div class="dropmenu">
+          <a href="b2b-myynti.html">B2B- ja B2G-myynti</a>
+          <a href="digimarkkinointi.html">Digimarkkinointi</a>
+          <a href="seo-ja-geo.html">SEO &amp; GEO</a>
+          <a href="kansainvalistyminen.html">Kansainvälistyminen</a>
+          <a href="koulutukset.html">Koulutukset</a>
+        </div>
+      </div>
+      <a href="miksi-seo-sales.html">Miksi SEO Sales</a>
+      <a href="yhteistyot.html">Yhteistyöt</a>
+      <a href="ajankohtaista.html">Ajankohtaista</a>
+      <a href="ukk.html">UKK</a>
+      <a href="yhteys.html">Ota yhteyttä</a>
+      <a href="nakyvyysanalyysi.html" class="nav-cta nav-cta--analyysi" aria-current="page">Näkyvyysanalyysi</a>
+    </nav>
+    <button class="menu-btn" aria-label="Valikko" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -314,7 +439,7 @@ footer a{color:var(--turq-dark);text-decoration:underline;text-underline-offset:
       <input type="text" id="url-input" placeholder="esim. yritys.fi" autocomplete="url" required>
       <button type="submit" class="btn-primary" id="check-btn">Analysoi</button>
     </form>
-    <p class="input-meta">Maksuton · Tulokset heti · Kuusi osa-aluetta</p>
+    <p class="input-meta">Maksuton · Tulokset sekunneissa · Ei kirjautumista</p>
   </div>
 </section>
 
@@ -323,8 +448,8 @@ footer a{color:var(--turq-dark);text-decoration:underline;text-underline-offset:
 
 <section class="intro" id="intro">
   <div class="wrap">
-    <h2 class="intro-title">Mitä analyysi kertoo</h2>
-    <div class="intro-grid" id="intro-grid"></div>
+    <h2 class="intro-title">Analyysi vastaa kuuteen kysymykseen</h2>
+    <div class="intro-grid" id="intro-grid"><div class="intro-item"><div class="cat-label">Hakukoneet</div><h3>Löytääkö Google teidät, ja houkutteleeko hakutulos klikkaamaan?</h3><p>Hakutulos on usein ensimmäinen kosketus yritykseen. Se ratkaisee, klikkaako hakija juuri teitä.</p></div><div class="intro-item"><div class="cat-label">Tekniikka</div><h3>Toimiiko sivusto nopeasti ja luotettavasti kaikilla laitteilla?</h3><p>Tekniset puutteet voivat estää hyvänkin sisällön näkymisen ja karkottaa kävijän ennen kuin sivu latautuu.</p></div><div class="intro-item"><div class="cat-label">Sisältö</div><h3>Onko sisältöä riittävästi, ja onko se selkeästi jäsennelty?</h3><p>Selkeästi jäsennelty sisältö auttaa sekä kävijää että hakukonetta ymmärtämään nopeasti, mitä tarjoatte ja kenelle.</p></div><div class="intro-item"><div class="cat-label">Somejaot</div><h3>Miltä linkki näyttää, kun se jaetaan LinkedInissä, Facebookissa tai WhatsAppissa?</h3><p>Kun tiedot ovat kunnossa, jaettu linkki näkyy kuvana, otsikkona ja kuvauksena eikä pelkkänä osoitteena. Se herättää luottamusta ja houkuttelee klikkaamaan.</p></div><div class="intro-item"><div class="cat-label">Tekoälyhaut</div><h3>Voivatko tekoälyhaut, kuten ChatGPT, Claude ja Gemini, suositella teitä?</h3><p>Yhä useampi hakee tietoa tekoälyhauista, kuten ChatGPT:stä, Claudesta, Geministä, Perplexitystä ja Copilotista. Tekoälyhakuihin optimointia kutsutaan myös nimellä GEO (Generative Engine Optimization).</p></div><div class="intro-item"><div class="cat-label">Avainsanat</div><h3>Tuoko sivusto ostavia asiakkaita vai satunnaisia kävijöitä?</h3><p>Näkyvyys tuottaa arvoa vasta, kun se tuo oikeita asiakkaita.</p></div></div>
   </div>
 </section>
 
@@ -360,26 +485,29 @@ footer a{color:var(--turq-dark);text-decoration:underline;text-underline-offset:
   <div class="blurred-preview" id="blurred-preview" aria-hidden="true" inert></div>
   <div class="gate-overlay">
     <div class="gate-card">
-      <h2>Täysi raportti <em>sähköpostiin</em></h2>
-      <p class="gate-free">Maksuton · Ei sitoumuksia</p>
+      <h2>Maksuton raportti <em>sähköpostiin</em></h2>
       <ul class="gate-list">
         <li>Jokaisen tarkistuksen tulos ja korjausohje</li>
         <li>Tärkeimmät kehityskohteet ensin</li>
         <li>Tulokset aukeavat myös tälle sivulle</li>
       </ul>
       <form id="email-form">
-        <label for="email-input" class="sr-only">Sähköpostiosoite</label>
-        <input type="email" id="email-input" autocomplete="email" placeholder="sähköpostiosoite" required>
+        <label for="email-input" class="sr-only">Sähköpostiosoite (pakollinen)</label>
+        <input type="email" id="email-input" autocomplete="email" placeholder="sähköpostiosoite *" required>
         <label for="phone-input" class="sr-only">Puhelinnumero (vapaaehtoinen)</label>
         <input type="tel" id="phone-input" autocomplete="tel" placeholder="puhelinnumero (vapaaehtoinen)">
         <div class="checkbox-row">
+          <input type="checkbox" id="own-email-check" required>
+          <label for="own-email-check">Vahvistan, että sähköpostiosoite on oma tai edustamani yrityksen osoite, ja olen lukenut <a href="tietosuojaseloste.html" rel="noopener" target="_blank">tietosuojaselosteen</a>.<span class="req" aria-hidden="true"> *</span></label>
+        </div>
+        <div class="checkbox-row" id="newsletter-row" hidden>
           <input type="checkbox" id="newsletter-check">
           <label for="newsletter-check">Suostun vastaanottamaan SEO Salesin uutiskirjeen: ajankohtaisia näkemyksiä näkyvyydestä, myynnistä ja kasvusta. Suostumuksen voi perua milloin tahansa.</label>
         </div>
         <p class="gate-error" id="gate-error" role="alert"></p>
         <button type="submit" class="btn-gate" id="unlock-btn">Lähetä raportti sähköpostiin</button>
       </form>
-      <p class="gate-note">Käytämme sähköpostiosoitetta raportin ja yhden muistutusviestin lähettämiseen. Uutiskirjettä lähetämme vain, jos annatte siihen suostumuksen. <a href="tietosuojaseloste.html">Tietosuojaseloste</a></p>
+      <p class="gate-note"><span class="req">*</span> Pakollinen tieto. Käytämme sähköpostiosoitetta raportin ja enintään kahden muistutusviestin lähettämiseen.</p>
     </div>
   </div>
 </div>
@@ -393,21 +521,54 @@ footer a{color:var(--turq-dark);text-decoration:underline;text-underline-offset:
     <h2>Käydään yhdessä läpi, miten <em>näkyvyydestä tulee myyntiä</em></h2>
     <div class="cta-body">
       <div class="cta-summary" id="cta-summary"></div>
-      <p>Analyysi näyttää lähtötilanteen. Keskustelussa katsomme, mitkä korjaukset tuovat teidän yritykselle eniten asiakkaita ja missä järjestyksessä ne kannattaa tehdä.</p>
+      <p>Analyysi näyttää lähtötilanteen. Keskustelussa katsomme, mitkä korjaukset tuovat teidän yritykselle eniten asiakkaita ja missä järjestyksessä ne kannattaa tehdä. Voimme myös hoitaa korjaukset puolestanne.</p>
     </div>
     <a href="yhteys.html" class="btn-cta">Varaa maksuton keskustelu</a>
+    <div class="cta-reviews">
+      <p>Oliko analyysistä hyötyä? Lyhyt arvio auttaa muita löytämään meidät.</p>
+      <div class="cta-review-links">
+        <a href="https://www.trustpilot.com/evaluate/seosales.fi" target="_blank" rel="noopener">Arvioi Trustpilotissa</a>
+        <a href="https://maps.app.goo.gl/SddN6FqofjdUd6Ny7" target="_blank" rel="noopener">Arvioi Googlessa</a>
+      </div>
+    </div>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <div class="wrap"><p><a href="index.html">SEO Sales</a> — näkyvyydestä kasvuun</p></div>
+  <div class="wrap"><p>© 2026 <a href="index.html">SEO Sales</a> · <a href="tietosuojaseloste.html">Tietosuojaseloste</a></p></div>
 </footer>
 
 <script>window.SEO_CHECKER_API = 'https://seo-checker-78870699374.europe-north1.run.app';</script>
 <script>
+// Yläpalkki toimii kuten seosales.fi:n script.js:ssä: tiivistyy vieritettäessä, mobiilivalikko ja Palvelut-valikko.
+(() => {
+  const hdr = document.getElementById('hdr');
+  const onScroll = () => hdr.classList.toggle('stuck', window.scrollY > 12);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const menuBtn = document.querySelector('.menu-btn');
+  const navLinks = document.querySelector('.nav-links');
+  const setMenu = open => {
+    navLinks.classList.toggle('open', open);
+    document.body.classList.toggle('menu-open', open);
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  menuBtn.addEventListener('click', () => setMenu(!navLinks.classList.contains('open')));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+  document.querySelectorAll('.dropdown > button').forEach(btn => {
+    btn.addEventListener('click', e => { e.preventDefault(); btn.parentElement.classList.toggle('open'); });
+  });
+  document.addEventListener('click', e => {
+    document.querySelectorAll('.dropdown.open').forEach(dd => { if (!dd.contains(e.target)) dd.classList.remove('open'); });
+  });
+})();
+
 // Kategoriat: kysymys kertoo hyödyn, info kertoo mitä tarkistetaan ja miksi.
+// build-site-page.mjs kirjoittaa kysymykset sivustoversioon myös staattiseksi HTML:ksi ja FAQ-rakenteeksi.
 const CATS = {
   seo: {
     label: 'Hakukoneet',
@@ -418,7 +579,7 @@ const CATS = {
   technical: {
     label: 'Tekniikka',
     question: 'Toimiiko sivusto nopeasti ja luotettavasti kaikilla laitteilla?',
-    info: 'Tarkistamme suojatun yhteyden, mobiilinäkymän, kieliasetuksen, indeksointiluvan, palvelimen vasteajan, robots.txt-tiedoston ja sivukartan.',
+    info: 'Tarkistamme suojatun yhteyden ja sen ohjauksen, mobiilinäkymän, kieliasetuksen, indeksointiluvan, palvelimen vasteajan, pakkauksen, sivun koon, latautumista estävät skriptit, kuvien mitat ja keveyden, kuvien ja videoiden koon, robots.txt-tiedoston ja sivukartan.',
     why: 'Tekniset puutteet voivat estää hyvänkin sisällön näkymisen ja karkottaa kävijän ennen kuin sivu latautuu.'
   },
   content: {
@@ -528,11 +689,24 @@ function showError(code, message) {
   show('error');
 }
 
+// Pakollinen vahvistus: raporttia ei voi tilata kenen tahansa osoitteeseen.
+const ownEmailMsg = () => $('own-email-check').setCustomValidity($('own-email-check').checked ? '' : 'Vahvistakaa, että sähköpostiosoite on teidän oma tai teidän yrityksen osoite ja että olette lukeneet tietosuojaselosteen.');
+ownEmailMsg();
+$('own-email-check').addEventListener('change', ownEmailMsg);
+
+// Uutiskirjeen suostumusruutu näytetään vain ilmaisten sähköpostipalvelujen osoitteille (sama lista kuin server.js:ssä).
+// Yritysosoitteisiin uutiskirje lähtee ilman ruutua, mistä kerrotaan lomakkeen alla.
+const FREE_MAIL_DOMAINS = new Set(['gmail.com', 'googlemail.com', 'hotmail.com', 'hotmail.fi', 'outlook.com', 'outlook.fi', 'live.com', 'live.fi', 'msn.com', 'yahoo.com', 'ymail.com', 'icloud.com', 'me.com', 'mac.com', 'aol.com', 'gmx.com', 'gmx.net', 'mail.com', 'proton.me', 'protonmail.com', 'pm.me', 'tutanota.com', 'tuta.io', 'yandex.com', 'luukku.com', 'suomi24.fi', 'elisanet.fi', 'kolumbus.fi', 'saunalahti.fi', 'netti.fi', 'welho.com', 'dnainternet.net', 'kotiposti.net', 'pp.inet.fi', 'sci.fi', 'jippii.fi', 'mbnet.fi']);
+$('email-input').addEventListener('input', () => {
+  const domain = $('email-input').value.trim().toLowerCase().split('@')[1] || '';
+  $('newsletter-row').hidden = !FREE_MAIL_DOMAINS.has(domain);
+});
+
 $('email-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = $('email-input').value.trim();
   const phone = $('phone-input').value.trim();
-  const newsletter = $('newsletter-check').checked;
+  const newsletter = !$('newsletter-row').hidden && $('newsletter-check').checked;
   if (!email) return;
   $('unlock-btn').disabled = true;
   let emailSent = false;
@@ -864,7 +1038,7 @@ function renderIntro() {
     '<p>' + esc(c.why) + '</p></div>'
   ).join('');
 }
-renderIntro();
+if (!$('intro-grid').children.length) renderIntro();
 
 // Etusivun teaser ohjaa tänne osoitteella ?url=…: analyysi käynnistyy heti.
 const startUrl = new URLSearchParams(location.search).get('url');
@@ -873,29 +1047,18 @@ if (startUrl) {
   $('check-form').requestSubmit();
 }
 
+// Esikatselu kuin verkkolehden maksumuuri: raportin alku näkyy terävänä, sitten sisältö liukuu sumeaksi.
 function buildBlurredPreview(data) {
-  const wrap = $('blurred-preview');
-  let html = '<div class="wrap">';
-  data.categories.forEach(c => {
-    html += '<div style="margin-bottom:24px"><h3 style="font-size:16px;padding:12px 0 8px;border-bottom:1.5px solid var(--line)">' + esc(c.label) + ' — ' + c.score + '/100</h3><ul style="list-style:none">';
-    c.checks.forEach(ch => {
-      html += '<li style="padding:12px 0;border-bottom:1px solid var(--line)"><strong>' + esc(ch.label) + '</strong><br>' + esc(ch.message) + '</li>';
-    });
-    html += '</ul></div>';
-  });
-  html += '</div>';
-  wrap.innerHTML = html;
+  // Heikoin osa-alue ensin, jolloin terävänä näkyy konkreettinen kehityskohde korjausohjeineen.
+  const worstFirst = { ...data, categories: [...data.categories].sort((a, b) => a.score - b.score) };
+  const body = '<div class="wrap"><div class="results-title"><p>Täysi raportti</p><h2>Tulokset osa-alueittain</h2></div>' + reportSectionsHtml(worstFirst) + '</div>';
+  $('blurred-preview').innerHTML = '<div class="preview-sharp">' + body + '</div><div class="preview-blur">' + body + '</div>';
 }
 
-function renderFullResults(data, sentTo) {
-  const wrap = $('full-results-content');
-  let html = (sentTo
-    ? '<p class="sent-note"><strong>Raportti on matkalla osoitteeseen ' + esc(sentTo) + '.</strong> Täydet tulokset näette myös alla.</p>'
-    : '<p class="sent-note">Raportin lähetys sähköpostiin ei onnistunut juuri nyt. Täydet tulokset näette alla.</p>') +
-    '<div class="results-title"><p>Täysi raportti</p><h2>Tulokset osa-alueittain</h2></div>';
-
+// Täyden raportin osa-alueet: sama sisältö tulossivulla ja lomakkeen takana näkyvässä esikatselussa.
+function reportSectionsHtml(data) {
+  let html = '';
   data.categories.forEach((c, i) => {
-    const col = scoreColor(c.score);
     html += '<div class="cat-section">' +
       '<div class="cat-section-header">' +
         '<span class="cat-num">' + String(i + 1).padStart(2, '0') + '</span>' +
@@ -925,6 +1088,18 @@ function renderFullResults(data, sentTo) {
     });
     html += '</ul></div>';
   });
+
+  return html;
+}
+
+function renderFullResults(data, sentTo) {
+  const wrap = $('full-results-content');
+  let html = (sentTo
+    ? '<p class="sent-note"><strong>Raportti on matkalla osoitteeseen ' + esc(sentTo) + '.</strong> Täydet tulokset näette myös alla.</p>'
+    : '<p class="sent-note">Raportin lähetys sähköpostiin ei onnistunut juuri nyt. Täydet tulokset näette alla.</p>') +
+    '<div class="results-title"><p>Täysi raportti</p><h2>Tulokset osa-alueittain</h2></div>';
+
+  html += reportSectionsHtml(data);
 
   wrap.innerHTML = html;
   show('results-full');

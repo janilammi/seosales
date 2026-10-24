@@ -1160,7 +1160,7 @@ section.tint .tp-inline-link img{width:clamp(104px,9.6vw,120px)}
 #yhteys-h1 em{color:#35D6D0}
 
 /* Näkyvyysanalyysin teaser (etusivu). Tumma tausta, otsikot, tekstit ja yläotsikko tulevat section.tint-tyyleistä. */
-.at-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:64px;align-items:end}
+.at-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:64px;align-items:start}
 .at-text h2{font-size:clamp(29px,3.6vw,42px);max-width:18ch;margin-bottom:20px;line-height:1.1}
 .at-text p:not(.eyebrow){font-size:var(--fs-body);max-width:520px;line-height:1.65}
 .at-form label{font-family:var(--sans);font-size:var(--fs-body);font-weight:500;letter-spacing:0;text-transform:none;color:#F5F3EE;margin:0 0 6px}
@@ -1199,6 +1199,14 @@ section.tint .at-meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.0
 @keyframes navCtaGlow{to{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.nav-links>a.nav-cta--analyysi::before{animation:none}}
 @media(max-width:1200px){.nav-links>a.nav-cta--analyysi{color:#F5F3EE!important;font-size:16px;padding:12px 24px!important;margin:20px 0 0}.nav-links>a.nav-cta--analyysi::before{background-image:linear-gradient(90deg,var(--violet-bright),var(--turq-bright),var(--violet-bright))}.nav-links>a.nav-cta--analyysi:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}}
+/* Ota yhteyttä täytettynä painikkeena, jotta se erottuu muista linkeistä (leveä näkymä) */
+@media(min-width:1201px){
+  .nav-links>a[href$="yhteys.html"]{background:var(--navy);color:#fff;padding:9px 18px}
+  .nav-links>a[href$="yhteys.html"]::after{display:none}
+  .nav-links>a[href$="yhteys.html"]:hover{background:var(--ink-2);color:#fff}
+  .dark-hero header .nav-links>a[href$="yhteys.html"]{background:#F5F3EE;color:#17161C}
+  .dark-hero header .nav-links>a[href$="yhteys.html"]:hover{background:#fff;color:#17161C}
+}
 
 /* Painike liukuvalla violetti–turkoosi-kehyksellä tummalla pohjalla (teaser) */
 .glow-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:15px;font-weight:700;color:#F5F3EE;background:transparent;border:0;border-radius:999px;padding:14px 28px;cursor:pointer;text-decoration:none;transition:background .2s}
