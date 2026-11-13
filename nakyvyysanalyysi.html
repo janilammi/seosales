@@ -43,12 +43,12 @@ header.stuck{background:rgba(255,255,255,.74);backdrop-filter:blur(22px) saturat
 .nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px;transition:height .38s cubic-bezier(.2,.7,.2,1)}
 header.stuck .nav{height:56px}
 .logo{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--display);font-weight:600;color:var(--navy);font-size:20px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;line-height:1}
-.logo img{height:30px;width:auto;display:block;transition:height .38s cubic-bezier(.2,.7,.2,1),filter .3s,opacity .2s}
-header.stuck .logo img{height:25px}
+.logo img{height:52px;width:auto;display:block;transition:height .38s cubic-bezier(.2,.7,.2,1),filter .3s,opacity .2s}
+header.stuck .logo img{height:43.3px}
 .logo:hover img{opacity:.85}
 /* Logon merkissä on violetti #7C6DC4: pelkkä invert kääntäisi sen oliivinvihreäksi.
    hue-rotate palauttaa sen vaaleaksi violetiksi (#8E7FD6), teksti muuttuu valkoiseksi. */
-.dark-hero header .logo img{filter:invert(1) hue-rotate(180deg)}
+.dark-hero header .logo img{filter:none}
 .nav-links{display:flex;gap:4px;align-items:center}
 .nav-links>a,.dropdown>button{color:var(--text);font-size:14.5px;font-family:var(--sans);font-weight:700;background:none;border:0;cursor:pointer;transition:color .2s,background .25s ease;padding:9px 15px;border-radius:999px;white-space:nowrap}
 .nav-links>a:not(.nav-cta):hover,.dropdown>button:hover{background:rgba(23,22,28,.055)}
@@ -115,7 +115,7 @@ header.stuck .logo img{height:25px}
   .nav-links.open>*:nth-child(5){animation-delay:.29s}
   body.menu-open{overflow:hidden}
   body.menu-open header,body.menu-open.dark-hero header:not(.stuck){background:var(--charcoal-3);border-bottom-color:rgba(255,255,255,.08);backdrop-filter:none}
-  body.menu-open header .logo img{filter:invert(1) hue-rotate(180deg)}
+  body.menu-open header .logo img{filter:none}
   body.menu-open .menu-btn{color:#F5F3EE}
 }
 @keyframes navIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -401,7 +401,7 @@ footer a{color:var(--turq-dark);text-decoration:underline;text-underline-offset:
 <!-- Sama yläpalkki kuin seosales.fi:n sivuilla. build-site-page.mjs muuttaa linkit suhteellisiksi. -->
 <header id="hdr">
   <div class="wrap nav">
-    <a href="/" class="logo"><img src="seo-sales-b2b-myynti-yrityksen-kasvu-valkoinen.svg" alt="SEO Sales"></a>
+    <a href="/" class="logo"><img src="seo-sales-b2b-myynti-yrityksen-kasvu-valkoinen.svg?v=2" alt="SEO Sales"></a>
     <nav class="nav-links">
       <div class="dropdown">
         <button type="button" aria-haspopup="true">Palvelut <span class="caret" aria-hidden="true"></span></button>
