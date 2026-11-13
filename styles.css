@@ -76,12 +76,12 @@ header.stuck .nav{height:56px}
 .logo{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--display);font-weight:600;color:var(--navy);font-size:20px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;line-height:1}
 .logo b{font-weight:700;font-size:27px;letter-spacing:.01em;line-height:1;background:linear-gradient(135deg,var(--violet) 20%,var(--violet-dark) 55%,var(--turq-dark));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--violet-dark);filter:drop-shadow(0 1.5px 1.5px rgba(82,50,224,.18));transition:filter .25s ease}
 .logo:hover b{filter:drop-shadow(0 2px 5px rgba(108,77,246,.4))}
-.logo img{height:30px;width:auto;display:block;transition:height .38s cubic-bezier(.2,.7,.2,1),filter .3s,opacity .2s}
-header.stuck .logo img{height:25px}
+.logo img{height:42px;width:auto;display:block;transition:height .38s cubic-bezier(.2,.7,.2,1),filter .3s,opacity .2s}
+header.stuck .logo img{height:35px}
 .logo:hover img{opacity:.85}
 /* Logon merkissä on violetti #7C6DC4: pelkkä invert kääntäisi sen oliivinvihreäksi.
    hue-rotate palauttaa sen vaaleaksi violetiksi (#8E7FD6), teksti muuttuu valkoiseksi. */
-.dark-hero header .logo img{filter:invert(1) hue-rotate(180deg)}
+.dark-hero header .logo img{filter:none}
 footer .logo img{height:30px}
 .nav-links{display:flex;gap:4px;align-items:center}
 .nav-links>a,.dropdown>button{color:var(--text);font-size:14.5px;font-family:var(--sans);font-weight:700;background:none;border:0;cursor:pointer;transition:color .2s,background .25s ease;padding:9px 15px;border-radius:999px;white-space:nowrap}
@@ -621,7 +621,7 @@ textarea{resize:vertical;min-height:90px}
 /* Footer — deliberate charcoal ending */
 footer{padding:72px 0 34px;background:var(--charcoal-3);border-top:1px solid rgba(255,255,255,.06)}
 footer .logo{color:#F5F3EE}
-footer .logo img{height:30px;filter:invert(1) hue-rotate(180deg)}
+footer .logo img{height:42px;filter:none}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;align-items:start;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
 .foot-col{display:flex;flex-direction:column;gap:10px;min-width:0}
 .foot-h{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--turq-bright);margin-bottom:8px}
@@ -894,7 +894,7 @@ section.tint .partners a{background:var(--bg)}
   .nav-links.open>*:nth-child(5){animation-delay:.29s}
   body.menu-open{overflow:hidden}
   body.menu-open header,body.menu-open.dark-hero header:not(.stuck){background:var(--charcoal-3);border-bottom-color:rgba(255,255,255,.08);backdrop-filter:none}
-  body.menu-open header .logo img{filter:invert(1) hue-rotate(180deg)}
+  body.menu-open header .logo img{filter:none}
   body.menu-open .menu-btn{color:#F5F3EE}
 }
 @keyframes navIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
