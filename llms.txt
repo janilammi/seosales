@@ -20,5 +20,5 @@ Sähköposti: janio.lammi@gmail.com
 
 - [Miksi SEO Sales](https://seosales.fi/miksi-seo-sales.html): toimintatapa ja periaatteet
 - [Ajankohtaista](https://seosales.fi/ajankohtaista.html): koulutukset, yhteistyöt ja tapahtumat
-- [Usein kysyttyä](https://seosales.fi/ukk.html): vastauksia palveluista ja yhteistyöstä
+- [Usein kysyttyä](https://seosales.fi/ukk.html): vastauksia palveluista, yhteistyöstä sekä verkkosivujen näkyvyydestä hakukoneissa ja tekoälyhauissa
 - [Ota yhteyttä](https://seosales.fi/yhteys.html): varaa maksuton keskustelu
